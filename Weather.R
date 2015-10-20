@@ -429,6 +429,10 @@ summary(munich$CloudCover)
 str(munich)
 summary(munich)
 
+# Missing dates
+sum(munich$Date<2013-01-01)
+munich <- munich[!(munich$Date<2013-01-01),]
+
 save(munich, file="./data/munich.RData")
 
 ggplot(munich, aes(Date, Mean_TemperatureC)) + geom_line() +
