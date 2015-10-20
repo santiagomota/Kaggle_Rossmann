@@ -1116,7 +1116,7 @@ write.csv(kiel, file="./data/kiel.csv")
 location <- "Lubeck"
 getStationCode(location)
 getStationCode("EDHL")
-# [1] "GERMANY    LUEBECK/BLANKENS EDHL          10156  53 48N  010 43E   16   X     T          6 DE"
+# [1] "GERMANY    LUEBECK/BLANKENS EDHL        10156  53 48N  010 43E   16   X     T          6 DE"
 
 id_station <- "EDHL" # lubeck
 

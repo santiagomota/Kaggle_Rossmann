@@ -8,4 +8,11 @@
 "GERMANY    ERFURT/BINDERSLE EDDE        10554  50 59N  010 58E  323   X     T          6 DE"
 "GERMANY    FRANKFURT MAIN A EDDF        10637  50 03N  008 36E  113   X     T          6 DE"
 "GERMANY    DRESDEN/KLOTZSCH EDDC        10488  51 08N  013 45E  226   X     T          6 DE"
+"GERMANY    NUERNBERG        EDDN        10763  49 30N  011 05E  312   X     T          6 DE"
+"GERMANY    TROLLENHAGEN     ETNU        10281  53 36N  013 19E   71   X     T          7 DE"
+"GERMANY    HAHN             EDFH        10616  49 57N  007 16E  498   X     T          6 DE"
+"GERMANY    KIEL/HOLTENAU(GN ETMK        10046  54 23N  010 09E   31   Z                7 DE"
+"GERMANY    LUEBECK/BLANKENS EDHL        10156  53 48N  010 43E   16   X     T          6 DE"
+"GERMANY    MAGDEBURG        EDBM               52 06N  011 35E   82   X     T          6 DE"
+"GERMANY    HANNOVER         EDDV        10338  52 28N  009 41E   54   X     T          6 DE"
 
