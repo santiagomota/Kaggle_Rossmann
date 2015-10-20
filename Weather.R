@@ -12,8 +12,6 @@
 # install_github("weatherData", "Ram-N")
 library("weatherData")
 
-# date_range <- as.POSIXlt(c(as.Date('2013-01-01 CET'):as.Date('2015-09-17 CET')), 
-#                          tz='UTC', origin='1970-01-01')
 date_range <- as.Date(c(as.Date('2013-01-01 CET'):as.Date('2015-09-17 CET')), 
                       tz='UTC', origin='1970-01-01')
 summary(date_range)
@@ -34,8 +32,8 @@ getStationCode(location)
 # 1002  Berlin    NH        KBML
 # 
 # [[2]]
-# [1] "USA KS OBERLIN          KOIN  OIN          39 50N  100 32W  824   X           W    9 US"    
-# [2] "USA NH BERLIN           KBML  BML   72616  44 35N  071 11W  345   X           A    7 US"    
+# [1] "USA KS OBERLIN              KOIN  OIN          39 50N  100 32W  824   X           W    9 US"    
+# [2] "USA NH BERLIN               KBML  BML   72616  44 35N  071 11W  345   X           A    7 US"    
 # [3] "GERMANY    BERLIN/TEMPLEHO  EDBB               52 28N  013 24E   49   Z                7 DE"
 # [4] "GERMANY    BERLIN/SCHONEFEL EDDB        10385  52 23N  013 32E   48   X     T          6 DE"
 # [5] "GERMANY    BERLIN/TEMPELHOF EDDI        10384  52 28N  013 24E   49   X     T          6 DE"
@@ -205,7 +203,7 @@ getStationCode(location)
 # 164 Stuttgart    AR        KSGT
 # 
 # [[2]]
-# [1] "USA AR STUTTGART        KSGT  SGT          34 36N  091 34W   68   X     Z          7 US"    
+# [1] "USA AR STUTTGART            KSGT  SGT          34 36N  091 34W   68   X     Z          7 US"    
 # [2] "GERMANY    STUTTGART/ECHTER EDDS        10738  48 40N  009 13E  419   X     T          6 DE"
 # [3] "GERMANY    STUTTGART/SCHNAR             10739  48 50N  009 12E  315            X       7 DE"
 
@@ -752,224 +750,504 @@ ggplot(dresden, aes(Date, Mean_TemperatureC)) + geom_line() +
 
 write.csv(dresden, file="./data/dresden.csv")
 
-################################################################################
-### 2015 data
-
-## http://www.r-bloggers.com/r-and-the-weather/
-## http://cran.r-project.org/web/packages/weatherData/index.html
-library(weatherData)
-library(ggplot2)
-library(scales)
-library(plyr)
-
-### Berlin/Tegel ###
-id_station <- "EDDT" # Berlin - 
-
-berlin_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                 opt_detailed=TRUE)
-berlin_2015$TemperatureC[berlin_2015$TemperatureC==-9999] <- NA
-save(berlin_2015, file="./data/berlin_2015.RData")
-
-plot(berlin_2015, main='berlin')
-
-berlin_2015$shortdate <- strftime(berlin_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(berlin_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at berlin")
-
-
 # ------------------------------------------------------------------------------
-### Bremen ###
-id_station <- "EDDW" # Bremen
+### nuernberg ###
 
-bremen_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                 opt_detailed=TRUE)
-bremen_2015$TemperatureC[bremen_2015$TemperatureC==-9999] <- NA
-save(bremen_2015, file="./data/bremen_2015.RData")
-
-plot(bremen_2015, main='bremen')
-
-bremen_2015$shortdate <- strftime(bremen_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(bremen_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at bremen")
-
-# ------------------------------------------------------------------------------
-### Stuttgart ###
-id_station <- "EDDS" # stuttgart
-
-stuttgart_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                    opt_detailed=TRUE)
-stuttgart_2015$TemperatureC[stuttgart_2015$TemperatureC==-9999] <- NA
-save(stuttgart_2015, file="./data/stuttgart_2015.RData")
-
-plot(stuttgart_2015, main='stuttgart')
-
-stuttgart_2015$shortdate <- strftime(stuttgart_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(stuttgart_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at stuttgart")
-
-# ------------------------------------------------------------------------------
-### Dusseldorf ###
-id_station <- "EDDL" # dusseldorf
-
-dusseldorf_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                     opt_detailed=TRUE)
-dusseldorf_2015$TemperatureC[dusseldorf_2015$TemperatureC==-9999] <- NA
-save(dusseldorf_2015, file="./data/dusseldorf_2015.RData")
-
-plot(dusseldorf_2015, main='dusseldorf')
-
-dusseldorf_2015$shortdate <- strftime(dusseldorf_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(dusseldorf_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at dusseldorf")
-
-# ------------------------------------------------------------------------------
-### Munich ###
-id_station <- "EDDM" # munich
-
-munich_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                 opt_detailed=TRUE)
-munich_2015$TemperatureC[munich_2015$TemperatureC==-9999] <- NA
-save(munich_2015, file="./data/munich_2015.RData")
-
-plot(munich_2015, main='munich')
-
-munich_2015$shortdate <- strftime(munich_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(munich_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at munich")
-
-# ------------------------------------------------------------------------------
-### Hamburg ###
-id_station <- "EDDH" # hamburg
-
-hamburg_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                  opt_detailed=TRUE)
-hamburg_2015$TemperatureC[hamburg_2015$TemperatureC==-9999] <- NA
-save(hamburg_2015, file="./data/hamburg_2015.RData")
-
-plot(hamburg_2015, main='hamburg')
-
-hamburg_2015$shortdate <- strftime(hamburg_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(hamburg_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at hamburg")
-
-# ------------------------------------------------------------------------------
-### Erfurt ###
-id_station <- "EDDE" # erfurt
-erfurt_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                 opt_detailed=TRUE)
-erfurt_2015$TemperatureC[erfurt_2015$TemperatureC==-9999] <- NA
-save(erfurt_2015, file="./data/erfurt_2015.RData")
-
-plot(erfurt_2015, main='erfurt')
-
-erfurt_2015$shortdate <- strftime(erfurt_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(erfurt_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at erfurt")
-
-# ------------------------------------------------------------------------------
-### Frankfurt ###
-location <- "Frankfurt"
+# Station at nuernberg
+location <- "Nuernberg"
 getStationCode(location)
-id_station <- "EDDF" # frankfurt
-frankfurt_2015 <- getWeatherForYear(id_station, 2015, station_type="airportCode",
-                                 opt_detailed=TRUE)
-
-frankfurt_2015$TemperatureC[frankfurt_2015$TemperatureC==-9999] <- NA
-save(frankfurt_2015, file="./data/frankfurt_2015.RData")
-
-plot(frankfurt_2015, main='frankfurt')
-
-frankfurt_2015$shortdate <- strftime(frankfurt_2015$Time, format="%m-%d")
-
-meanTemp <- ddply(frankfurt_2015, .(shortdate), summarize, mean_T=mean(TemperatureC))
-meanTemp$shortdate <- as.Date(meanTemp$shortdate, format="%m-%d")
-
-ggplot(meanTemp, aes(shortdate, mean_T)) + geom_line() +
-      scale_x_date(labels=date_format("%m/%d")) + xlab("") + ylab("Mean Temp C") +
-      ggtitle("2015 Average Daily Temperature at frankfurt")
 
 
+# [1] "GERMANY    NUERNBERG        EDDN        10763  49 30N  011 05E  312   X     T          6 DE"
 
-################################################################################
-## Means
+id_station <- "EDDN" # nuernberg
 
-date_range <- as.POSIXlt(c(as.Date('2013-01-01 CET'):as.Date('2015-09-17 CET')), 
-                         tz='UTC', origin='1970-01-01')
-summary(date_range)
+# Range
+# "2013-01-01" - "2015-09-17"
 
-temperature_max <- merge(date_range, berlin$Max_TemperatureC[(berlin$Date %in% date_range)])
+checkDataAvailabilityForDateRange(id_station, "2013-01-01", "2015-09-17", 
+                                  "airportCode")
 
+showAvailableColumns(id_station, "2013-01-01", "2015-09-17",
+                     station_type="airportCode", opt_detailed=TRUE, 
+                     opt_verbose=TRUE)
+# columnNumber            columnName
+# 1             1               TimeEST
+# 2             2          TemperatureC
+# 3             3            Dew_PointC
+# 4             4              Humidity
+# 5             5 Sea_Level_PressurehPa
+# 6             6          VisibilityKm
+# 7             7        Wind_Direction
+# 8             8        Wind_SpeedKm_h
+# 9             9        Gust_SpeedKm_h
+# 10           10       Precipitationmm
+# 11           11                Events
+# 12           12            Conditions
+# 13           13        WindDirDegrees
+# 14           14               DateUTC
 
-plot(weather$Date, weather$Mean_TemperatureC, col=as.factor(weather$Events), 
-     main='Temperature')
-plot(weather$Mean_Sea_Level_PressurehPa, weather$Mean_TemperatureC, 
-     col=as.factor(weather$Events), main='Pressure vs. Temperature')
-plot(weather$Mean_Sea_Level_PressurehPa, weather$Precipitationmm, 
-     col=as.factor(weather$Events), main='Pressure vs. Precipitation')
-boxplot(Mean_TemperatureC ~ Mean_Sea_Level_PressurehPa, data=weather, 
-        main='Pressure vs. Temperature')
-boxplot(Mean_TemperatureC ~ Station, data=weather, main='Temperature')
-boxplot(Mean_Sea_Level_PressurehPa ~ Station, data=weather, main='Pressure')
-boxplot(Mean_Humidity ~ Station, data=weather, main='Humidity')
-boxplot(Precipitationmm ~ Station, data=weather, main='Precipitation')
-hist(weather$Precipitationmm)
+# nuernberg <- getWeatherForDate(id_station, "2013-01-01", "2015-09-17", 
+#                             daily_min=TRUE, daily_max=TRUE, 
+#                             opt_all_columns=TRUE, opt_detailed=FALSE)
 
-table(weather$Events, useNA = 'ifany')
+id_station <- "EDDN" # nuernberg
+nuernberg <- getWeatherForDate(id_station, date_range[1], date_range[1], 
+                               daily_min=TRUE, daily_max=TRUE, 
+                               opt_all_columns=TRUE, opt_detailed=FALSE)
+# There is some values with CET and CEST, so we eliminate this column
+# names(nuernberg) %in% names(temp)
+nuernberg <- nuernberg[, c(1, 3:24)]
 
-temp1 <- aggregate(weather$Mean_TemperatureC, by=list(weather$Date), FUN=mean)
-temp2 <- aggregate(weather$Mean_Humidity, by=list(weather$Date), FUN=mean)
-temp3 <- aggregate(weather$Mean_Sea_Level_PressurehPa, by=list(weather$Date), FUN=mean)
-temp4 <- aggregate(weather$Precipitationmm, by=list(weather$Date), FUN=mean)
-# temp5 <- aggregate(as.character(weather$Events), by=list(weather$Date), FUN=mode)
+for (i in as.character(date_range)[2:990]) {
+      print(i)
+      temp <- getWeatherForDate(id_station, i, i, daily_min=TRUE, 
+                                daily_max=TRUE, opt_all_columns=TRUE, 
+                                opt_detailed=FALSE)
+      temp <- temp[, c(1, 3:24)]
+      nuernberg <- rbind(nuernberg, temp)
+}
 
-weather_light <- data.frame(Date=temp1$Group.1, Temperature=temp1$x, 
-                            Humidity=temp2$x, Pressure=temp3$x, 
-                            Precipitation=temp4$x) # , Events=temp5$x)
+nuernberg$Station <- id_station
 
-# names(weather_light) <- c('Temperature', 'Humidity', 'Pressure', 
-#                           'Precipitation', 'Events', 'Date')
+names(nuernberg)
+summary(nuernberg$WindDirDegrees)
+summary(as.factor(nuernberg$Events))
+summary(nuernberg$Max_Wind_SpeedKm_h)
+summary(nuernberg$Max_Gust_SpeedKm_h)
+summary(nuernberg$Precipitationmm)
+summary(nuernberg$Mean_Humidity)
+summary(nuernberg$CloudCover)
 
-# weather_light$Events <- as.factor(weather_light$Events)
+# nuernberg$Events     <- as.factor(nuernberg$Events)
 
-save(weather_light, file="./data/weather_ligth.RData")
+str(nuernberg)
+summary(nuernberg)
 
-ggplot(weather_light, aes(Date, Temperature)) + geom_line() +
-      # scale_x_date(labels=date_format("%m/%d")) + 
+save(nuernberg, file="./data/nuernberg.RData")
+
+ggplot(nuernberg, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
-      ggtitle("Average Daily Temperature at Germany")
+      ggtitle("Average Temperature at nuernberg")
+
+write.csv(nuernberg, file="./data/nuernberg.csv")
+
+# ------------------------------------------------------------------------------
+### neubrandenburg ###
+
+# Station at neubrandenburg
+location <- "Neubrandenburg"
+getStationCode(location)
+# [1] "GERMANY    TROLLENHAGEN     ETNU        10281  53 36N  013 19E   71   X     T          7 DE"
+
+id_station <- "ETNU" # neubrandenburg
+
+# Range
+# "2013-01-01" - "2015-09-17"
+
+checkDataAvailabilityForDateRange(id_station, "2013-01-01", "2015-09-17", 
+                                  "airportCode")
+
+showAvailableColumns(id_station, "2013-01-01", "2015-09-17",
+                     station_type="airportCode", opt_detailed=TRUE, 
+                     opt_verbose=TRUE)
+# columnNumber            columnName
+# 1             1               TimeEST
+# 2             2          TemperatureC
+# 3             3            Dew_PointC
+# 4             4              Humidity
+# 5             5 Sea_Level_PressurehPa
+# 6             6          VisibilityKm
+# 7             7        Wind_Direction
+# 8             8        Wind_SpeedKm_h
+# 9             9        Gust_SpeedKm_h
+# 10           10       Precipitationmm
+# 11           11                Events
+# 12           12            Conditions
+# 13           13        WindDirDegrees
+# 14           14               DateUTC
+
+# neubrandenburg <- getWeatherForDate(id_station, "2013-01-01", "2015-09-17", 
+#                             daily_min=TRUE, daily_max=TRUE, 
+#                             opt_all_columns=TRUE, opt_detailed=FALSE)
+
+id_station <- "ETNU" # neubrandenburg
+neubrandenburg <- getWeatherForDate(id_station, date_range[1], date_range[1], 
+                                    daily_min=TRUE, daily_max=TRUE, 
+                                    opt_all_columns=TRUE, opt_detailed=FALSE)
+# There is some values with CET and CEST, so we eliminate this column
+# names(neubrandenburg) %in% names(temp)
+neubrandenburg <- neubrandenburg[, c(1, 3:24)]
+
+for (i in as.character(date_range)[2:990]) {
+      print(i)
+      temp <- getWeatherForDate(id_station, i, i, daily_min=TRUE, 
+                                daily_max=TRUE, opt_all_columns=TRUE, 
+                                opt_detailed=FALSE)
+      temp <- temp[, c(1, 3:24)]
+      neubrandenburg <- rbind(neubrandenburg, temp)
+}
+
+neubrandenburg$Station <- id_station
+
+names(neubrandenburg)
+summary(neubrandenburg$WindDirDegrees)
+summary(as.factor(neubrandenburg$Events))
+summary(neubrandenburg$Max_Wind_SpeedKm_h)
+summary(neubrandenburg$Max_Gust_SpeedKm_h)
+summary(neubrandenburg$Precipitationmm)
+summary(neubrandenburg$Mean_Humidity)
+summary(neubrandenburg$CloudCover)
+
+# neubrandenburg$Events     <- as.factor(neubrandenburg$Events)
+
+str(neubrandenburg)
+summary(neubrandenburg)
+
+# Some missing data
+neubrandenburg <- neubrandenburg[!(neubrandenburg$Date<2013-01-01),]
+
+save(neubrandenburg, file="./data/neubrandenburg.RData")
+
+ggplot(neubrandenburg, aes(Date, Mean_TemperatureC)) + geom_line() +
+      xlab("Date") + ylab("Mean Temp C") +
+      ggtitle("Average Temperature at neubrandenburg")
+
+write.csv(neubrandenburg, file="./data/neubrandenburg.csv")
+
+# ------------------------------------------------------------------------------
+### Hahn ###
+
+# Station at hahn
+location <- "Hahn"
+getStationCode(location)
+# [1] "GERMANY    HAHN             EDFH        10616  49 57N  007 16E  498   X     T          6 DE"
+
+id_station <- "EDFH" # hahn
+
+# Range
+# "2013-01-01" - "2015-09-17"
+
+checkDataAvailabilityForDateRange(id_station, "2013-01-01", "2015-09-17", 
+                                  "airportCode")
+
+showAvailableColumns(id_station, "2013-01-01", "2015-09-17",
+                     station_type="airportCode", opt_detailed=TRUE, 
+                     opt_verbose=TRUE)
+# columnNumber            columnName
+# 1             1               TimeEST
+# 2             2          TemperatureC
+# 3             3            Dew_PointC
+# 4             4              Humidity
+# 5             5 Sea_Level_PressurehPa
+# 6             6          VisibilityKm
+# 7             7        Wind_Direction
+# 8             8        Wind_SpeedKm_h
+# 9             9        Gust_SpeedKm_h
+# 10           10       Precipitationmm
+# 11           11                Events
+# 12           12            Conditions
+# 13           13        WindDirDegrees
+# 14           14               DateUTC
+
+# hahn <- getWeatherForDate(id_station, "2013-01-01", "2015-09-17", 
+#                             daily_min=TRUE, daily_max=TRUE, 
+#                             opt_all_columns=TRUE, opt_detailed=FALSE)
+
+id_station <- "EDFH" # hahn
+hahn <- getWeatherForDate(id_station, date_range[1], date_range[1], 
+                          daily_min=TRUE, daily_max=TRUE, 
+                          opt_all_columns=TRUE, opt_detailed=FALSE)
+# There is some values with CET and CEST, so we eliminate this column
+# names(hahn) %in% names(temp)
+hahn <- hahn[, c(1, 3:24)]
+
+for (i in as.character(date_range)[2:990]) {
+      print(i)
+      temp <- getWeatherForDate(id_station, i, i, daily_min=TRUE, 
+                                daily_max=TRUE, opt_all_columns=TRUE, 
+                                opt_detailed=FALSE)
+      temp <- temp[, c(1, 3:24)]
+      hahn <- rbind(hahn, temp)
+}
+
+hahn$Station <- id_station
+
+names(hahn)
+summary(hahn$WindDirDegrees)
+summary(as.factor(hahn$Events))
+summary(hahn$Max_Wind_SpeedKm_h)
+summary(hahn$Max_Gust_SpeedKm_h)
+summary(hahn$Precipitationmm)
+summary(hahn$Mean_Humidity)
+summary(hahn$CloudCover)
+
+# hahn$Events     <- as.factor(hahn$Events)
+
+str(hahn)
+summary(hahn)
+
+# Missing dates
+sum(hahn$Date<2013-01-01)
+hahn <- hahn[!(hahn$Date<2013-01-01),]
+
+save(hahn, file="./data/hahn.RData")
+
+ggplot(hahn, aes(Date, Mean_TemperatureC)) + geom_line() +
+      xlab("Date") + ylab("Mean Temp C") +
+      ggtitle("Average Temperature at hahn")
+
+write.csv(hahn, file="./data/hahn.csv")
+
+# ------------------------------------------------------------------------------
+### Kiel ###
+
+# Station at kiel
+location <- "Kiel"
+getStationCode(location)
+# [1] "GERMANY    KIEL/HOLTENAU CI EDHK               54 23N  010 09E   31   X     T          7 DE"
+# [2] "GERMANY    KIEL/HOLTENAU(GN ETMK        10046  54 23N  010 09E   31   Z                7 DE"
+# [3] "GERMANY    KIEL/HOLTENAU(G  EDCK               54 22N  010 09E   31   Z                7 DE"
+
+id_station <- "ETMK" # kiel
+
+# Range
+# "2013-01-01" - "2015-09-17"
+
+checkDataAvailabilityForDateRange(id_station, "2013-01-01", "2015-09-17", 
+                                  "airportCode")
+
+showAvailableColumns(id_station, "2013-01-01", "2015-09-17",
+                     station_type="airportCode", opt_detailed=TRUE, 
+                     opt_verbose=TRUE)
+# columnNumber            columnName
+# 1             1               TimeEST
+# 2             2          TemperatureC
+# 3             3            Dew_PointC
+# 4             4              Humidity
+# 5             5 Sea_Level_PressurehPa
+# 6             6          VisibilityKm
+# 7             7        Wind_Direction
+# 8             8        Wind_SpeedKm_h
+# 9             9        Gust_SpeedKm_h
+# 10           10       Precipitationmm
+# 11           11                Events
+# 12           12            Conditions
+# 13           13        WindDirDegrees
+# 14           14               DateUTC
+
+# kiel <- getWeatherForDate(id_station, "2013-01-01", "2015-09-17", 
+#                             daily_min=TRUE, daily_max=TRUE, 
+#                             opt_all_columns=TRUE, opt_detailed=FALSE)
+
+id_station <- "ETMK" # kiel
+kiel <- getWeatherForDate(id_station, date_range[1], date_range[1], 
+                          daily_min=TRUE, daily_max=TRUE, 
+                          opt_all_columns=TRUE, opt_detailed=FALSE)
+# There is some values with CET and CEST, so we eliminate this column
+# names(kiel) %in% names(temp)
+kiel <- kiel[, c(1, 3:24)]
+
+for (i in as.character(date_range)[2:990]) {
+      print(i)
+      temp <- getWeatherForDate(id_station, i, i, daily_min=TRUE, 
+                                daily_max=TRUE, opt_all_columns=TRUE, 
+                                opt_detailed=FALSE)
+      temp <- temp[, c(1, 3:24)]
+      kiel <- rbind(kiel, temp)
+}
+
+kiel$Station <- id_station
+
+names(kiel)
+summary(kiel$WindDirDegrees)
+summary(as.factor(kiel$Events))
+summary(kiel$Max_Wind_SpeedKm_h)
+summary(kiel$Max_Gust_SpeedKm_h)
+summary(kiel$Precipitationmm)
+summary(kiel$Mean_Humidity)
+summary(kiel$CloudCover)
+
+# kiel$Events     <- as.factor(kiel$Events)
+
+str(kiel)
+summary(kiel)
+
+# Missing dates
+sum(kiel$Date<2013-01-01)
+kiel <- kiel[!(kiel$Date<2013-01-01),]
+
+save(kiel, file="./data/kiel.RData")
+
+ggplot(kiel, aes(Date, Mean_TemperatureC)) + geom_line() +
+      xlab("Date") + ylab("Mean Temp C") +
+      ggtitle("Average Temperature at kiel")
+
+write.csv(kiel, file="./data/kiel.csv")
+
+# ------------------------------------------------------------------------------
+### Lubeck ###
+
+# Station at lubeck
+location <- "Lubeck"
+getStationCode(location)
+getStationCode("EDHL")
+# [1] "GERMANY    LUEBECK/BLANKENS EDHL          10156  53 48N  010 43E   16   X     T          6 DE"
+
+id_station <- "EDHL" # lubeck
+
+# Range
+# "2013-01-01" - "2015-09-17"
+
+checkDataAvailabilityForDateRange(id_station, "2013-01-01", "2015-09-17", 
+                                  "airportCode")
+
+showAvailableColumns(id_station, "2013-01-01", "2015-09-17",
+                     station_type="airportCode", opt_detailed=TRUE, 
+                     opt_verbose=TRUE)
+# columnNumber            columnName
+# 1             1               TimeEST
+# 2             2          TemperatureC
+# 3             3            Dew_PointC
+# 4             4              Humidity
+# 5             5 Sea_Level_PressurehPa
+# 6             6          VisibilityKm
+# 7             7        Wind_Direction
+# 8             8        Wind_SpeedKm_h
+# 9             9        Gust_SpeedKm_h
+# 10           10       Precipitationmm
+# 11           11                Events
+# 12           12            Conditions
+# 13           13        WindDirDegrees
+# 14           14               DateUTC
+
+# lubeck <- getWeatherForDate(id_station, "2013-01-01", "2015-09-17", 
+#                             daily_min=TRUE, daily_max=TRUE, 
+#                             opt_all_columns=TRUE, opt_detailed=FALSE)
+
+id_station <- "EDHL" # lubeck
+lubeck <- getWeatherForDate(id_station, date_range[1], date_range[1], 
+                            daily_min=TRUE, daily_max=TRUE, 
+                            opt_all_columns=TRUE, opt_detailed=FALSE)
+# There is some values with CET and CEST, so we eliminate this column
+# names(lubeck) %in% names(temp)
+lubeck <- lubeck[, c(1, 3:24)]
+
+for (i in as.character(date_range)[2:990]) {
+      print(i)
+      temp <- getWeatherForDate(id_station, i, i, daily_min=TRUE, 
+                                daily_max=TRUE, opt_all_columns=TRUE, 
+                                opt_detailed=FALSE)
+      temp <- temp[, c(1, 3:24)]
+      lubeck <- rbind(lubeck, temp)
+}
+
+lubeck$Station <- id_station
+
+names(lubeck)
+summary(lubeck$WindDirDegrees)
+summary(as.factor(lubeck$Events))
+summary(lubeck$Max_Wind_SpeedKm_h)
+summary(lubeck$Max_Gust_SpeedKm_h)
+summary(lubeck$Precipitationmm)
+summary(lubeck$Mean_Humidity)
+summary(lubeck$CloudCover)
+
+# lubeck$Events     <- as.factor(lubeck$Events)
+
+str(lubeck)
+summary(lubeck)
+
+# Missing dates
+sum(lubeck$Date<2013-01-01)
+lubeck <- lubeck[!(lubeck$Date<2013-01-01),]
+
+save(lubeck, file="./data/lubeck.RData")
+
+ggplot(lubeck, aes(Date, Mean_TemperatureC)) + geom_line() +
+      xlab("Date") + ylab("Mean Temp C") +
+      ggtitle("Average Temperature at lubeck")
+
+write.csv(lubeck, file="./data/lubeck.csv")
+
+
+# ------------------------------------------------------------------------------
+### Magdeburg ###
+
+# Station at magdeburg
+location <- "Magdeburg"
+getStationCode(location)
+# [1] "GERMANY    MAGDEBURG        EDBM               52 06N  011 35E   82   X     T          6 DE"
+
+id_station <- "EDBM" # magdeburg
+
+# Range
+# "2013-01-01" - "2015-09-17"
+
+checkDataAvailabilityForDateRange(id_station, "2013-01-01", "2015-09-17", 
+                                  "airportCode")
+
+showAvailableColumns(id_station, "2013-01-01", "2015-09-17",
+                     station_type="airportCode", opt_detailed=TRUE, 
+                     opt_verbose=TRUE)
+# columnNumber            columnName
+# 1             1               TimeEST
+# 2             2          TemperatureC
+# 3             3            Dew_PointC
+# 4             4              Humidity
+# 5             5 Sea_Level_PressurehPa
+# 6             6          VisibilityKm
+# 7             7        Wind_Direction
+# 8             8        Wind_SpeedKm_h
+# 9             9        Gust_SpeedKm_h
+# 10           10       Precipitationmm
+# 11           11                Events
+# 12           12            Conditions
+# 13           13        WindDirDegrees
+# 14           14               DateUTC
+
+# magdeburg <- getWeatherForDate(id_station, "2013-01-01", "2015-09-17", 
+#                             daily_min=TRUE, daily_max=TRUE, 
+#                             opt_all_columns=TRUE, opt_detailed=FALSE)
+
+id_station <- "EDBM" # magdeburg
+magdeburg <- getWeatherForDate(id_station, date_range[1], date_range[1], 
+                               daily_min=TRUE, daily_max=TRUE, 
+                               opt_all_columns=TRUE, opt_detailed=FALSE)
+# There is some values with CET and CEST, so we eliminate this column
+# names(magdeburg) %in% names(temp)
+magdeburg <- magdeburg[, c(1, 3:24)]
+
+for (i in as.character(date_range)[2:990]) {
+      print(i)
+      temp <- getWeatherForDate(id_station, i, i, daily_min=TRUE, 
+                                daily_max=TRUE, opt_all_columns=TRUE, 
+                                opt_detailed=FALSE)
+      temp <- temp[, c(1, 3:24)]
+      magdeburg <- rbind(magdeburg, temp)
+}
+
+magdeburg$Station <- id_station
+
+names(magdeburg)
+summary(magdeburg$WindDirDegrees)
+summary(as.factor(magdeburg$Events))
+summary(magdeburg$Max_Wind_SpeedKm_h)
+summary(magdeburg$Max_Gust_SpeedKm_h)
+summary(magdeburg$Precipitationmm)
+summary(magdeburg$Mean_Humidity)
+summary(magdeburg$CloudCover)
+
+# magdeburg$Events     <- as.factor(magdeburg$Events)
+
+str(magdeburg)
+summary(magdeburg)
+
+save(magdeburg, file="./data/magdeburg.RData")
+
+ggplot(magdeburg, aes(Date, Mean_TemperatureC)) + geom_line() +
+      xlab("Date") + ylab("Mean Temp C") +
+      ggtitle("Average Temperature at magdeburg")
+
+write.csv(magdeburg, file="./data/magdeburg.csv")
 
