@@ -1255,3 +1255,88 @@ ggplot(magdeburg, aes(Date, Mean_TemperatureC)) + geom_line() +
 
 write.csv(magdeburg, file="./data/magdeburg.csv")
 
+# ------------------------------------------------------------------------------
+### Hannover ###
+
+# Station at hannover
+location <- "Hannover"
+getStationCode(location)
+# [1] "GERMANY    HANNOVER         EDDV        10338  52 28N  009 41E   54   X     T          6 DE"
+# [2] "GERMANY    HANNOVER         EDVV               52 28N  009 41E   54   Z                7 DE"
+
+id_station <- "EDDV" # hannover
+
+# Range
+# "2013-01-01" - "2015-09-17"
+
+checkDataAvailabilityForDateRange(id_station, "2013-01-01", "2015-09-17", 
+                                  "airportCode")
+
+showAvailableColumns(id_station, "2013-01-01", "2015-09-17",
+                     station_type="airportCode", opt_detailed=TRUE, 
+                     opt_verbose=TRUE)
+# columnNumber            columnName
+# 1             1               TimeEST
+# 2             2          TemperatureC
+# 3             3            Dew_PointC
+# 4             4              Humidity
+# 5             5 Sea_Level_PressurehPa
+# 6             6          VisibilityKm
+# 7             7        Wind_Direction
+# 8             8        Wind_SpeedKm_h
+# 9             9        Gust_SpeedKm_h
+# 10           10       Precipitationmm
+# 11           11                Events
+# 12           12            Conditions
+# 13           13        WindDirDegrees
+# 14           14               DateUTC
+
+# hannover <- getWeatherForDate(id_station, "2013-01-01", "2015-09-17", 
+#                             daily_min=TRUE, daily_max=TRUE, 
+#                             opt_all_columns=TRUE, opt_detailed=FALSE)
+
+id_station <- "EDDV" # hannover
+hannover <- getWeatherForDate(id_station, date_range[1], date_range[1], 
+                          daily_min=TRUE, daily_max=TRUE, 
+                          opt_all_columns=TRUE, opt_detailed=FALSE)
+# There is some values with CET and CEST, so we eliminate this column
+# names(hannover) %in% names(temp)
+hannover <- hannover[, c(1, 3:24)]
+
+for (i in as.character(date_range)[2:990]) {
+      print(i)
+      temp <- getWeatherForDate(id_station, i, i, daily_min=TRUE, 
+                                daily_max=TRUE, opt_all_columns=TRUE, 
+                                opt_detailed=FALSE)
+      temp <- temp[, c(1, 3:24)]
+      hannover <- rbind(hannover, temp)
+}
+
+hannover$Station <- id_station
+
+names(hannover)
+summary(hannover$WindDirDegrees)
+summary(as.factor(hannover$Events))
+summary(hannover$Max_Wind_SpeedKm_h)
+summary(hannover$Max_Gust_SpeedKm_h)
+summary(hannover$Precipitationmm)
+summary(hannover$Mean_Humidity)
+summary(hannover$CloudCover)
+
+# hannover$Events     <- as.factor(hannover$Events)
+
+str(hannover)
+summary(hannover)
+
+# Missing dates
+sum(hannover$Date<2013-01-01)
+hannover <- hannover[!(hannover$Date<2013-01-01),]
+
+save(hannover, file="./data/hannover.RData")
+
+ggplot(hannover, aes(Date, Mean_TemperatureC)) + geom_line() +
+      xlab("Date") + ylab("Mean Temp C") +
+      ggtitle("Average Temperature at hannover")
+
+write.csv(hannover, file="./data/hannover.csv")
+
