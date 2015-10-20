@@ -91,6 +91,8 @@ for (i in as.character(date_range)[2:990]) {
       berlin <- rbind(berlin, temp)
 }
 
+berlin$Station <- id_station
+
 names(berlin)
 summary(berlin$WindDirDegrees)
 summary(as.factor(berlin$Events))
