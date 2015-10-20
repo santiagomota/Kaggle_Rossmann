@@ -111,6 +111,8 @@ ggplot(berlin, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at berlin")
 
+write.csv(berlin, file="./data/berlin.csv")
+
 
 # ------------------------------------------------------------------------------
 ### Bremen ###
@@ -190,6 +192,8 @@ save(bremen, file="./data/bremen.RData")
 ggplot(bremen, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at bremen")
+
+write.csv(bremen, file="./data/bremen.csv")
 
 
 # ------------------------------------------------------------------------------
@@ -277,6 +281,8 @@ ggplot(stuttgart, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at stuttgart")
 
+write.csv(stuttgart, file="./data/stuttgart.csv")
+
 
 # ------------------------------------------------------------------------------
 ### Dusseldorf ###
@@ -336,6 +342,7 @@ for (i in as.character(date_range)[2:990]) {
       dusseldorf <- rbind(dusseldorf, temp)
 }
 
+dusseldorf$Station <- id_station
 
 names(dusseldorf)
 summary(dusseldorf$WindDirDegrees)
@@ -356,6 +363,8 @@ save(dusseldorf, file="./data/dusseldorf.RData")
 ggplot(dusseldorf, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at dusseldorf")
+
+write.csv(dusseldorf, file="./data/dusseldorf.csv")
 
 
 # ------------------------------------------------------------------------------
@@ -439,6 +448,8 @@ ggplot(munich, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at munich")
 
+write.csv(munich, file="./data/munich.csv")
+
 
 # ------------------------------------------------------------------------------
 ### Hamburg ###
@@ -518,6 +529,8 @@ save(hamburg, file="./data/hamburg.RData")
 ggplot(hamburg, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at hamburg")
+
+write.csv(hamburg, file="./data/hamburg.csv")
 
 
 # ------------------------------------------------------------------------------
@@ -599,6 +612,8 @@ ggplot(erfurt, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at erfurt")
 
+write.csv(erfurt, file="./data/erfurt.csv")
+
 
 # ------------------------------------------------------------------------------
 ### Frankfurt ###
@@ -675,6 +690,9 @@ save(frankfurt, file="./data/frankfurt.RData")
 ggplot(frankfurt, aes(Date, Mean_TemperatureC)) + geom_line() +
       xlab("Date") + ylab("Mean Temp C") +
       ggtitle("Average Temperature at frankfurt")
+
+write.csv(frankfurt, file="./data/frankfurt.csv")
+
 
 # ------------------------------------------------------------------------------
 ### Dresden ###
