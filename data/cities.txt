@@ -1,6 +1,5 @@
 # Cities
 
-
 "GERMANY    BERLIN/TEGEL (FA EDDT        10382  52 34N  013 19E   37   X     T          6 DE"
 "GERMANY    BREMEN           EDDW        10224  53 02N  008 48E    5   X     T          6 DE"
 "GERMANY    STUTTGART/ECHTER EDDS        10738  48 40N  009 13E  419   X     T          6 DE"
@@ -8,8 +7,5 @@
 "GERMANY    HAMBURG/FUHLSBUT EDDH        10147  53 38N  010 00E   16   X     T          6 DE"
 "GERMANY    ERFURT/BINDERSLE EDDE        10554  50 59N  010 58E  323   X     T          6 DE"
 "GERMANY    FRANKFURT MAIN A EDDF        10637  50 03N  008 36E  113   X     T          6 DE"
-<<<<<<< HEAD
 "GERMANY    DRESDEN/KLOTZSCH EDDC        10488  51 08N  013 45E  226   X     T          6 DE"
-=======
-"GERMANY    DRESDEN/KLOTZSCH EDDC        10488  51 08N  013 45E  226   X     T          6 DE"
->>>>>>> origin/master
+
