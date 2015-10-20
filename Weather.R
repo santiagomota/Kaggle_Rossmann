@@ -9,7 +9,7 @@
 # External data
 # install.packages("devtools")
 # library("devtools")
-# install_github("weatherData", "Ram-N")
+# install_github("Ram-N/weatherData")
 library("weatherData")
 
 date_range <- as.Date(c(as.Date('2013-01-01 CET'):as.Date('2015-09-17 CET')), 
@@ -755,7 +755,7 @@ ggplot(dresden, aes(Date, Mean_TemperatureC)) + geom_line() +
 write.csv(dresden, file="./data/dresden.csv")
 
 # ------------------------------------------------------------------------------
-### nuernberg ###
+### Nuernberg ###
 
 # Station at nuernberg
 location <- "Nuernberg"
@@ -837,7 +837,7 @@ ggplot(nuernberg, aes(Date, Mean_TemperatureC)) + geom_line() +
 write.csv(nuernberg, file="./data/nuernberg.csv")
 
 # ------------------------------------------------------------------------------
-### neubrandenburg ###
+### Neubrandenburg ###
 
 # Station at neubrandenburg
 location <- "Neubrandenburg"
